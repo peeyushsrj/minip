@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        $("form").submit(function(event){
+            event.preventDefault();
+            $("#data").text("")
+
+            $("#code").text("loading...")
+            $.post({
+                url:'/exec',
+                type:'post',
+                data:$('#myForm').serialize()
+            }, function(res, data,kch){
+                // console.log(res)
+                $("#data").text(res)
+                $("#code").text(kch.status)
+            });
+        });
+    });
+    </script>
+</head>
+<body class="container" style="background-color: #ffeee3;">
+    <h3>minip</h3>
+    <form action="/exec" id="myForm" class="form-inline">
+        <select name="method" value="GET" class="form-control" style="width: 100px;">
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="DELETE">DELETE</option>
+        </select>
+        <input type="url" name="url" value="" placeholder="url (https://ex...)" class="form-control" size="100"><br>
+        <textarea name="payload" value="" cols="112" rows="10" placeholder="payload (json)" class="form-control"></textarea><br>
+        <input type="submit" value="Submit" class="btn btn-success"> Status: <span id="code"></span>
+    </form> 
+    <div class="form-inline">
+        <br>
+        <textarea id="data" cols="112" rows="10" class="form-control"></textarea>
+    </div>
+
+</body>
+</html>
